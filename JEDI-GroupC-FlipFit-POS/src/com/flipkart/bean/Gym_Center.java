@@ -6,6 +6,19 @@ public class Gym_Center {
 	private String center_name;
 	private String address;
 	private int no_of_slots;
+	private boolean isApproved;
+	/**
+	 * @return the isApproved
+	 */
+	public boolean isApproved() {
+		return isApproved;
+	}
+	/**
+	 * @param isApproved the isApproved to set
+	 */
+	public void setApproved(boolean isApproved) {
+		this.isApproved = isApproved;
+	}
 	/**
 	 * @return the center_id
 	 */
