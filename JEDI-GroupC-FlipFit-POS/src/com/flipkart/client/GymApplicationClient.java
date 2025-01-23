@@ -33,24 +33,7 @@ public class GymApplicationClient {
             System.out.println("Registration failed. Please try again.");
         }
    }
-	public void registerCustomer(Scanner sc) {
-        System.out.println("\n--- Register as a Customer ---");
-        System.out.print("Enter Name: ");
-        String name = sc.nextLine();
-        System.out.print("Enter Email: ");
-        String email = sc.nextLine();
-        System.out.print("Enter Contact Number: ");
-        String contact = sc.nextLine();
-        System.out.print("Enter Password: ");
-        String password = sc.nextLine();
-
-        User newCustomer = userOps.registerCustomer(name, email, contact, password);
-        if (newCustomer != null) {
-            System.out.println("Customer registered successfully with ID: " + newCustomer.getId());
-        } else {
-            System.out.println("Registration failed. Please try again.");
-        }
-	}
+	
 	public static void main(String args[]) {
 		GymApplicationClient gappc = new GymApplicationClient();
 		Scanner sc = new Scanner(System.in);
@@ -59,9 +42,6 @@ public class GymApplicationClient {
 			int option = sc.nextInt();
 			gappc.handleUserInput(option);
 		}
-	
-
-
 	}
 	
 	public void showMenu() {
@@ -101,52 +81,7 @@ public class GymApplicationClient {
 		
 	}
 	
-	public void handleUserLogin() {
-		Scanner sc = new Scanner(System.in);
-		String email;
-		String password; 
-		String role;
-		System.out.println("Enter Email: ");
-		email = sc.nextLine();
-		System.out.println("Enter Password: ");
-		password = sc.nextLine();
-		System.out.println("Enter Role: ");
-		role = sc.nextLine();
-		System.out.println(role=="Admin");
-		if(role.equalsIgnoreCase("Admin")) {
-			try {
-				gac.adminPage();
-			} catch (Exception e) {
-				// TODO: handle exception
-				System.out.println(e.getMessage());
-			}
-				
-		}
-		else if (role.equalsIgnoreCase("Gym Owner")) {
-            try {
-                // Authenticate and retrieve GymOwner details
-                Gym_Owner gymOwner = userOps.authenticateGymOwner(email, password);
-                if (gymOwner != null) {
-                    goc.GymOwnerPage(sc, gymOwner); // Pass the GymOwner object
-                } else {
-                    System.out.println("Invalid email or password.");
-                }
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-		}
-		else if(role.equalsIgnoreCase("Customer")) {
-			try {
-				Customer customer = userOps.authenticateCustomer(email, password);
-				cc.customerPage(sc, customer);
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-			}
-		}	
-		else {
-			System.out.println("Invalid Credentials or role selected");
-		}
-	}
+	
 	
 
 }
