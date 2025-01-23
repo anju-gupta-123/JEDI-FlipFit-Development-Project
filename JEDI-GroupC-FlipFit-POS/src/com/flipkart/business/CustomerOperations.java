@@ -1,89 +1,117 @@
 package com.flipkart.business;
 
-import java.util.*;
-
-import com.flipkart.bean.Customer;
-
-class Pair<K, V> {
-    private K key;
-    private V value;
-
-    // Constructor
-    public Pair(K key, V value) {
-        this.key = key;
-        this.value = value;
-    }
-
-    // Getters
-    public K getKey() {
-        return key;
-    }
-
-    public V getValue() {
-        return value;
-    }
-
-    @Override
-    public String toString() {
-        return "(" + key + ", " + value + ")";
-    }
-}
+import com.flipkart.bean.Admin;
+import com.flipkart.bean.Gym_Center;
+import com.flipkart.bean.Slot;
+import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CustomerOperations {
-	Customer customer = new Customer();
-	public void registerCustomer(int id, String name, String contact, String email, String password){
-		customer.setId(id);
-		customer.setName(name);
-		customer.setContact(contact);
-		customer.setEmail(email);
-		customer.setPassword(password);
-		
-		System.out.println("Customer Added Successfully");
-	}
-	
-	public void bookSlot(String gym, String slotId){
-		Map<String, List<Pair<String, Integer>>> gyms = new HashMap<>();
-		
-		List<Pair<String, Integer>> gym1 = new ArrayList<>();
-		gym1.add(new Pair<>("6:00 AM", 10));
-		gym1.add(new Pair<>("8:00 AM", 7));
-		gym1.add(new Pair<>("9:00 AM", 5));
-		
-		List<Pair<String, Integer>> gym2 = new ArrayList<>();
-		gym2.add(new Pair<>("5:00 AM", 8));
-		gym2.add(new Pair<>("10:00 AM", 10));
-		gym2.add(new Pair<>("11:00 AM", 11));
-		
-		gyms.put("Gym1", gym1);
-		gyms.put("Gym2", gym2);
-		
-		List<Pair<String, Integer>> presentSlots = gyms.get(gym);
-		
-		int op = 1;
-		for(Pair<String, Integer> slot:presentSlots) {
-			System.out.println("Option " + op + "-> Slot: " + slot.getKey() + ", Capacity: " + slot.getValue());
-			op++;
-		}
-		
-		System.out.println("Choose any option: ");
-		
-		presentSlots.set(op-1, new Pair<>(presentSlots.get(op-1).getKey(), presentSlots.get(op-1).getValue() - 1));
-		
-		System.out.println("Slot at " + slotId  + " booked successfully");
-	}
-	public void cancelBooking()
-	{
-		//Method Definition
-		System.out.println("Canceled Bookings");
-	}
-	public void viewAvailableSlots()
-	{
-		//Method Definition
-		System.out.println("View Slots");
-	}
-	public void viewDayPlan()
-	{
-		//Method Definition
-		System.out.println("View Day plans");
-	}
+    private List<Integer> bookedSlots = new ArrayList<>(); // Stores booked slot IDs for simplicity
+
+    /**
+     * Displays all approved gyms (ID and name).
+     */
+    public boolean viewAvailableApprovedGyms() {
+        List<Gym_Center> approvedGyms = Admin.getApprovedGymCenters();
+
+        if (approvedGyms.isEmpty()) {
+            System.out.println("No approved gyms available.");
+            return false;
+        }
+
+        System.out.println("Gym ID | Gym Name");
+        for (Gym_Center gym : approvedGyms) {
+            System.out.println(gym.getCenter_id() + " | " + gym.getCenter_name());
+        }
+        return true;
+    }
+
+    /**
+     * Displays all slots for a specific gym center.
+     * @param centerId ID of the gym center
+     */
+    public boolean viewSlots(int centerId) {
+        List<Slot> slots = SlotOperations.gymslot.get(centerId);
+
+        if (slots == null || slots.isEmpty()) {
+            System.out.println("No slots available for this gym center.");
+            return false;
+        }
+
+        System.out.println("\n--- Available Slots ---");
+        for (Slot slot : slots) {
+            System.out.println("Slot ID: " + slot.getSlotId() + ", Time: " + slot.getStartTime() + " - " + slot.getEndTime() +
+                    ", Seats Available: " + slot.getNumberofseats());
+        }
+        return true;
+    }
+
+    /**
+     * Books a slot for a specific gym center and slot ID.
+     * @param centerId Gym center ID
+     * @param slotId   Slot ID
+     * @return true if booking is successful, false otherwise
+     */
+    public boolean bookSlot(int userId, int centerId, int slotId) {
+        List<Slot> slots = SlotOperations.gymslot.get(centerId);
+        if (slots == null) {
+            System.out.println("Invalid gym center.");
+            return false;
+        }
+
+        for (Slot slot : slots) {
+            if (slot.getSlotId() == slotId) {
+                if (slot.getNumberofseats() > 0) {
+                    slot.setNumberofseats(slot.getNumberofseats() - 1); // Decrease available seats
+
+                    // Delegate to BookingOperations
+                    Date cur= new Date();
+                    BookingOperations.createBooking(userId, slotId, cur, "BOOKED");
+                    System.out.println("Booking confirmed for Slot ID: " + slotId);
+                    return true;
+                } else {
+                    System.out.println("Slot is fully booked.");
+                    return false;
+                }
+            }
+        }
+        System.out.println("Invalid slot ID.");
+        return false;
+    }
+
+    /**
+     * Displays all booked slots for the customer.
+     */
+    public void viewAllBookedSlots() {
+        if (bookedSlots.isEmpty()) {
+            System.out.println("You have no booked slots.");
+            return;
+        }
+
+        System.out.println("Booked Slot IDs: " + bookedSlots);
+    }
+
+    /**
+     * Cancels a booked slot by booking ID.
+     * @param bookingId Booking ID (Slot ID in this case)
+     * @return true if cancellation is successful, false otherwise
+     */
+    public boolean cancelBookedSlot(int bookingId) {
+        if (bookedSlots.contains(bookingId)) {
+            bookedSlots.remove((Integer) bookingId); // Remove from booked slots
+            // Restore the seat count for the slot
+            for (List<Slot> slotList : SlotOperations.gymslot.values()) {
+                for (Slot slot : slotList) {
+                    if (slot.getSlotId() == bookingId) {
+                        slot.setNumberofseats(slot.getNumberofseats() + 1);
+                        return true;
+                    }
+                }
+            }
+        }
+        System.out.println("Invalid booking ID.");
+        return false;
+    }
 }
