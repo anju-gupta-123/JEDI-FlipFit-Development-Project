@@ -137,7 +137,8 @@ public class GymApplicationClient {
 		}
 		else if(role.equalsIgnoreCase("Customer")) {
 			try {
-				cc.customerPage(sc, email);
+				Customer customer = userOps.authenticateCustomer(email, password);
+				cc.customerPage(sc, customer);
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
@@ -149,3 +150,4 @@ public class GymApplicationClient {
 	
 
 }
+
