@@ -59,6 +59,9 @@ public class GymApplicationClient {
 			int option = sc.nextInt();
 			gappc.handleUserInput(option);
 		}
+	
+
+
 	}
 	
 	public void showMenu() {
