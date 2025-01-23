@@ -9,7 +9,7 @@ import java.util.Map;
 public class UserOperations {
     private static Map<String, Gym_Owner> gymOwners = new HashMap<>();
     
-    private static Map<Integer, Customer> customers = new HashMap<>();
+    private static Map<String, Customer> customers = new HashMap<>();
     //private static Map<Integer, Gym_Owner> gymOwners = new HashMap<>();
     private static int customerIdCounter = 1;
     private static int gymOwnerIdCounter = 1;
@@ -42,7 +42,7 @@ public Customer registerCustomer(String name, String email, String contact, Stri
         newCustomer.setContact(contact);
         newCustomer.setPassword(password);
 
-        customers.put(newCustomer.getId(), newCustomer);
+        customers.put(email, newCustomer);
         return newCustomer;
     }
 
@@ -71,4 +71,13 @@ public Customer registerCustomer(String name, String email, String contact, Stri
         }
         return null;
     }
+    public Customer authenticateCustomer(String email, String password) {
+        Customer customer = customers.get(email);
+        if (customer != null ) {
+        	
+            return customer;
+        }
+        return null;
+    }
 }
+

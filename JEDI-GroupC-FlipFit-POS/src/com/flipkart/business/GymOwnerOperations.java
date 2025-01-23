@@ -108,6 +108,12 @@ public class GymOwnerOperations {
         
         }
 
+        
+        
+
+    
+    
+
     public void editGymDetails(int centerId, String centerName, String address, String slotsInput) {
         Optional<Gym_Center> gymOptional = gymCenters.stream()
                 .filter(g -> g.getCenter_id() == centerId)
@@ -132,6 +138,26 @@ public class GymOwnerOperations {
         }
     }
 
-    
+    public void registerCustomer(int centerId, int id, String name, String contact, String email, String password) {
+        Optional<Gym_Center> gymOptional = gymCenters.stream()
+                .filter(g -> g.getCenter_id() == centerId)
+                .findFirst();
+
+        if (gymOptional.isPresent()) {
+            Customer customer = new Customer();
+            customer.setId(id);
+            customer.setContact(contact);
+            customer.setEmail(email);
+            customer.setName(name);
+            customer.setPassword(password);
+            registeredCustomers.computeIfAbsent(centerId, k -> new ArrayList<>()).add(customer);
+
+            System.out.println("Customer registered successfully!");
+        } else {
+            System.out.println("Gym Center not found!");
+        }
+    }
 }
+
+
 
