@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package com.flipkart.client;
 import java.util.*;
 
@@ -135,6 +138,26 @@ public class GymOwnerClient {
 		}
 		System.out.println("-------------------------------------");
 	}
+	public void addSlots(Scanner sc, String Gym_OwnerEmail) throws Exception{
+		getAllGymDetails();
+		System.out.println("Enter the Gym_Center id for which you want to add slots: ");
+		Gym_Center.setId(sc.nextInt());
+		if(!GymOwnerOperations.isApproved(Gym_Center.getId())){
+			System.out.println("This Gym is not Authorized");
+			GymOwnerPage(sc, Gym_OwnerEmail);
+		}
+		else {
+			viewAllSlots(Gym_Center.getId());
+			System.out.println("Add slot timing: ");
+			Slot slot = new Slot();
+			slot.setTime(sc.next());
+			System.out.println("Add slot Id: ");
+			slot.setId(sc.nextInt());
+			GymOwnerOperations.createSlot(slot);
+			GymOwnerOperations.addSlots(Gym_Center.getId(),slot);
+			GymOwnerPage(sc, Gym_OwnerEmail);
+		}
+	}
 	
 
 	public void viewAllSlots(int Gym_CenterId) throws Exception{
@@ -191,3 +214,4 @@ public class GymOwnerClient {
     }
 
 }
+
