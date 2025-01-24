@@ -19,7 +19,7 @@ public class BookingOperations {
     public static void createBooking(int userId, int slotId, Date date, String status) {
         Booking booking = new Booking();
         booking.setBooking_id(bookingIdCounter++);
-        booking.setUser_id(userId);
+        booking.setCustomer_id(userId);
         booking.setSlot_id(slotId);
         booking.setBooking_date(date);
         booking.setStatus(status);

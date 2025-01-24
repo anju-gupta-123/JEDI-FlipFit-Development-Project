@@ -6,6 +6,14 @@ public class Slot {
 	private LocalTime startTime;
 	private LocalTime endTime;
 	private int numberofseats;
+	private int availableSeats;
+	
+	public int getAvailableSeats() {
+		return availableSeats;
+	}
+	public void setAvailableSeats(int availableSeats) {
+		this.availableSeats = availableSeats;
+	}
 	/**
 	 * @return the slotId
 	 */
