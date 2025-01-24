@@ -1,6 +1,12 @@
+
 package com.flipkart.business;
 
 import com.flipkart.bean.Gym_Owner;
+import com.flipkart.DAO.CustomerDAOImpl;
+import com.flipkart.DAO.CustomerDAOInterface;
+import com.flipkart.DAO.GymOwnerDAOInterface;
+import com.flipkart.DAO.GymOwnerDAOImpl;
+
 import com.flipkart.bean.Customer;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,6 +15,8 @@ import com.flipkart.DAO.UserDAOInterface;
 
 public class UserOperations {
 	UserDAOInterface userimpl = new UserDaoImpl();
+	CustomerDAOInterface customerimpl= new CustomerDAOImpl();
+	GymOwnerDAOInterface gymownerimpl= new GymOwnerDAOImpl();
 
     private static Map<String, Gym_Owner> gymOwners = new HashMap<>();
     
@@ -50,14 +58,16 @@ public Customer registerCustomer(String name, String email, String contact, Stri
 
     
     public Gym_Owner authenticateGymOwner(String email, String password) {
-        Gym_Owner owner = gymOwners.get(email);
-        if (owner != null && owner.getPassword().equals(password)) {
+        Gym_Owner owner = gymownerimpl.getGymOwnerDetails(email);
+        if (owner != null ) {
+        	
             return owner;
         }
         return null;
     }
     public Customer authenticateCustomer(String email, String password) {
-        Customer customer = customers.get(email);
+        Customer customer = customerimpl.getCustomerDetails(email);
+        
         if (customer != null ) {
         	
             return customer;
@@ -65,8 +75,3 @@ public Customer registerCustomer(String name, String email, String contact, Stri
         return null;
     }
 }
-
-
-
-
-

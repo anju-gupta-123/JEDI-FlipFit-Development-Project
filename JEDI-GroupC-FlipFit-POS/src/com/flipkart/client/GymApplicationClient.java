@@ -126,10 +126,18 @@ public class GymApplicationClient {
             try {
                 // Authenticate and retrieve GymOwner details
                 Gym_Owner gymOwner = userOps.authenticateGymOwner(email, password);
-                if (gymOwner != null) {
-                    goc.GymOwnerPage(sc, gymOwner); // Pass the GymOwner object
-                } else {
-                    System.out.println("Invalid email or password.");
+                if (gymOwner == null) {
+                	System.out.println("SORRY THERE IS NO GYM OWNER WITH THIS EMAIL");
+					
+                } 
+                else if(gymOwner.getPassword()!= password)
+                {
+                	System.out.println("Sorry wrong password");
+					return;
+                }
+                else {
+                	
+                	goc.GymOwnerPage(sc, gymOwner);
                 }
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -138,7 +146,17 @@ public class GymApplicationClient {
 		else if(role.equalsIgnoreCase("Customer")) {
 			try {
 				Customer customer = userOps.authenticateCustomer(email, password);
-				cc.customerPage(sc, customer);
+				if(customer==null) {
+					System.out.println("SORRY THERE IS NO CUSTOMER WITH THIS EMAIL");
+					return;
+				}
+				else if(customer.getPassword()!=password)
+				{
+					System.out.println("Sorry wrong password");
+					return;
+				}
+				else {
+				cc.customerPage(sc, customer);}
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
@@ -150,4 +168,3 @@ public class GymApplicationClient {
 	
 
 }
-

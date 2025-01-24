@@ -15,7 +15,7 @@ import com.flipkart.bean.Gym_Center;
 import com.flipkart.bean.Slot;
 import com.flipkart.utils.DBUtils;
 
-public class CustomerDAOImpl {
+public class CustomerDAOImpl implements CustomerDAOInterface{
 	
 	public Customer getCustomerDetails(String email) {
 		Customer customer = new Customer();
