@@ -11,7 +11,7 @@ public class DBUtils {
 	public static Connection connect() throws Exception {
 		Properties props = new Properties();
 		FileInputStream fs = new FileInputStream(System.getProperty("user.dir")+"/src/config.properties");
-		System.out.println(System.getProperty("user.dir")+"/src/config.properties");
+		//System.out.println(System.getProperty("user.dir")+"/src/config.properties");
 		
 		props.load(fs);
 		

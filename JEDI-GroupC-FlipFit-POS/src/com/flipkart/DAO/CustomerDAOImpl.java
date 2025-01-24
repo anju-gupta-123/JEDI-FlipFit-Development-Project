@@ -1,11 +1,11 @@
 package com.flipkart.DAO;
 
-import java.io.Console;
+
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.time.LocalTime;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +32,7 @@ public class CustomerDAOImpl implements CustomerDAOInterface{
 				customer.setEmail(rs.getString("email"));
 				customer.setPassword(rs.getString("customerPassword"));
 				customer.setContact(rs.getString("contact"));
+				customer.setId(rs.getInt("customerId"));
 				
 				
 				break;
@@ -84,7 +85,7 @@ public class CustomerDAOImpl implements CustomerDAOInterface{
 		try {  
 			
 			Connection con = DBUtils.connect();
-			PreparedStatement stmt=con.prepareStatement("select * from flipfitSlot where gym_centerID=?");
+			PreparedStatement stmt=con.prepareStatement("select * from flipfitSlot where centerID=?");
 			stmt.setInt(1, gym_centerID);
 			
 			ResultSet rs = stmt.executeQuery();  
@@ -92,10 +93,10 @@ public class CustomerDAOImpl implements CustomerDAOInterface{
 				int availableSeats = rs.getInt("capacity") - getBookingsForASlot(rs.getInt("slotId"));
 				if(availableSeats > 0) {
 					Slot stSlot = new Slot();
+					stSlot.setSlotId(rs.getInt("slotId"));
 					stSlot.setCenterId(gym_centerID);
 					stSlot.setAvailableSeats(availableSeats);
-					stSlot.setStartTime(rs.getTime("startTime").toLocalTime());
-					stSlot.setEndTime(rs.getTime("endTime").toLocalTime());
+					stSlot.setStartTime(rs.getInt("startTime"));
 					stSlot.setNumberofseats(rs.getInt("capacity"));
 					viewAvailableSlots.add(stSlot);
 				}
@@ -118,19 +119,19 @@ public class CustomerDAOImpl implements CustomerDAOInterface{
 		try {  
 			
 			Connection con = DBUtils.connect();
-			PreparedStatement stmt=con.prepareStatement("select * from flipfitBookedSlots where customerId=? and bookedSlotStatus=?");
+			PreparedStatement stmt=con.prepareStatement("select * from flipfitBookedSlot where customerId=? and bookedSlotStatus=?");
 			stmt.setInt(1, customerID);
-			stmt.setString(2, "confirmed");
+			stmt.setInt(2, 1);
 			
 			  
 			ResultSet rs = stmt.executeQuery();  
 			while(rs.next()) {
 				Booking booking = new Booking();
 				booking.setBooking_id(rs.getInt("bookedSlotId"));
-				booking.setBooking_date(rs.getDate("created_at"));
+				booking.setBooking_date(rs.getDate("date"));
 				booking.setSlot_id(rs.getInt("slotId"));
 				booking.setCustomer_id(rs.getInt("customerId"));
-				booking.setStatus("confirmed");
+				booking.setStatus("bookedSlotStatus");
 				
 				bookedSlots.add(booking);
 			}
@@ -144,25 +145,26 @@ public class CustomerDAOImpl implements CustomerDAOInterface{
 		}
 	}
 	
-	public void deleteBookedSlot(int bookedSlotID) {
+	public boolean deleteBookedSlot(int bookedSlotID) {
 		try {  
 			
 			Connection con = DBUtils.connect();
-			PreparedStatement stmt=con.prepareStatement("delete from flipfitBookedSlot where bookedSlotId=?");
+			PreparedStatement stmt=con.prepareStatement("update flipfitBookedSlot set bookedSlotStatus=0 where bookedSlotId=?");
 			stmt.setInt(1, bookedSlotID);
 			
 			  
 			int i = stmt.executeUpdate();
+			con.close();
 			if(i > 0)
-				System.out.println("Deleted slot with booking ID " + bookedSlotID);
+				return true;
 			else {
-				System.out.println("No booking with ID " + bookedSlotID);
+				return true;
 			}
-			con.close(); 
 			 
 			  
 		}catch(Exception e){ 
 				e.printStackTrace();
+				return false;
 		}
 	}
 	
@@ -172,7 +174,7 @@ public class CustomerDAOImpl implements CustomerDAOInterface{
 		try {  
 			
 			Connection con = DBUtils.connect();
-			PreparedStatement stmt=con.prepareStatement("select count(*) as countOfBookings from flipfitBookedSlots where slotId=?");
+			PreparedStatement stmt=con.prepareStatement("select count(*) as countOfBookings from flipfitBookedSlot where slotId=?");
 			stmt.setInt(1, slot_id);
 			ResultSet rs = stmt.executeQuery(); 
 			
@@ -189,11 +191,11 @@ public class CustomerDAOImpl implements CustomerDAOInterface{
 				return 0;
 		}
 	}
+
 	
-	public static void main(String args[]) {
-		CustomerDAOImpl cd = new CustomerDAOImpl();
-		cd.getCustomerDetails("royaayush2002@gmail.com");
-		
-		}
+
+	
+	
+	
 
 }

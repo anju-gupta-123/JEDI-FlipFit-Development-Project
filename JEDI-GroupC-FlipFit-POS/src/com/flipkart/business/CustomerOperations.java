@@ -1,51 +1,44 @@
 package com.flipkart.business;
 
+import com.flipkart.DAO.AdminDAOImpl;
+import com.flipkart.DAO.CustomerDAOImpl;
+import com.flipkart.DAO.CustomerDAOInterface;
+import com.flipkart.DAO.AdminDAOInterface;
 import com.flipkart.bean.Admin;
 import com.flipkart.bean.Gym_Center;
 import com.flipkart.bean.Slot;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
-
+import com.flipkart.bean.*;
 public class CustomerOperations {
+	AdminDAOInterface adminImpl = new AdminDAOImpl();
+	CustomerDAOInterface customerImpl= new CustomerDAOImpl();
+	BookingOperations bk= new BookingOperations();
     private List<Integer> bookedSlots = new ArrayList<>(); // Stores booked slot IDs for simplicity
+    
 
     /**
      * Displays all approved gyms (ID and name).
      */
-    public boolean viewAvailableApprovedGyms() {
-        List<Gym_Center> approvedGyms = Admin.getApprovedGymCenters();
+    public List<Gym_Center> viewAvailableApprovedGyms() {
 
-        if (approvedGyms.isEmpty()) {
-            System.out.println("No approved gyms available.");
-            return false;
-        }
 
-        System.out.println("Gym ID | Gym Name");
-        for (Gym_Center gym : approvedGyms) {
-            System.out.println(gym.getCenter_id() + " | " + gym.getCenter_name());
-        }
-        return true;
+        System.out.println("\n--- All Approved Gyms ---");
+        return adminImpl.viewApprovedGymCenters();
+
+        
     }
 
     /**
      * Displays all slots for a specific gym center.
      * @param centerId ID of the gym center
      */
-    public boolean viewSlots(int centerId) {
-        List<Slot> slots = SlotOperations.gymslot.get(centerId);
-
-        if (slots == null || slots.isEmpty()) {
-            System.out.println("No slots available for this gym center.");
-            return false;
-        }
-
-        System.out.println("\n--- Available Slots ---");
-        for (Slot slot : slots) {
-            System.out.println("Slot ID: " + slot.getSlotId() + ", Time: " + slot.getStartTime() + " - " + slot.getEndTime() +
-                    ", Seats Available: " + slot.getNumberofseats());
-        }
-        return true;
+    public List<Slot> viewSlots(int centerId) {
+    	System.out.println("\n--- All Approved Gyms ---");
+    	List<Slot> x= customerImpl.viewAvailableSlots(centerId, null);
+    	return x;
+        
     }
 
     /**
@@ -54,43 +47,23 @@ public class CustomerOperations {
      * @param slotId   Slot ID
      * @return true if booking is successful, false otherwise
      */
-    public boolean bookSlot(int userId, int centerId, int slotId) {
-        List<Slot> slots = SlotOperations.gymslot.get(centerId);
-        if (slots == null) {
-            System.out.println("Invalid gym center.");
-            return false;
-        }
-
-        for (Slot slot : slots) {
-            if (slot.getSlotId() == slotId) {
-                if (slot.getNumberofseats() > 0) {
-                    slot.setNumberofseats(slot.getNumberofseats() - 1); // Decrease available seats
-
-                    // Delegate to BookingOperations
-                    Date cur= new Date();
-                    BookingOperations.createBooking(userId, slotId, cur, "BOOKED");
-                    System.out.println("Booking confirmed for Slot ID: " + slotId);
-                    return true;
-                } else {
-                    System.out.println("Slot is fully booked.");
-                    return false;
-                }
-            }
-        }
-        System.out.println("Invalid slot ID.");
-        return false;
+    public boolean bookSlot(int userId, int centerId, int slotId, Date utilDate) {
+        Booking booking= new Booking();
+        System.out.println("BROHTREEEEE"+userId);
+        booking.setCustomer_id(userId);
+        booking.setSlot_id(slotId);
+        booking.setBooking_date(utilDate);
+        return BookingOperations.createBooking(booking);
+        
     }
 
     /**
      * Displays all booked slots for the customer.
      */
-    public void viewAllBookedSlots() {
-        if (bookedSlots.isEmpty()) {
-            System.out.println("You have no booked slots.");
-            return;
-        }
-
-        System.out.println("Booked Slot IDs: " + bookedSlots);
+    public List<Booking> viewAllBookedSlots(int customerid) {
+        
+    	return customerImpl.viewAllBookedSlots(customerid);
+        
     }
 
     /**
@@ -99,19 +72,8 @@ public class CustomerOperations {
      * @return true if cancellation is successful, false otherwise
      */
     public boolean cancelBookedSlot(int bookingId) {
-        if (bookedSlots.contains(bookingId)) {
-            bookedSlots.remove((Integer) bookingId); // Remove from booked slots
-            // Restore the seat count for the slot
-            for (List<Slot> slotList : SlotOperations.gymslot.values()) {
-                for (Slot slot : slotList) {
-                    if (slot.getSlotId() == bookingId) {
-                        slot.setNumberofseats(slot.getNumberofseats() + 1);
-                        return true;
-                    }
-                }
-            }
-        }
-        System.out.println("Invalid booking ID.");
-        return false;
+        	
+        return customerImpl.deleteBookedSlot(bookingId);
+       
     }
 }

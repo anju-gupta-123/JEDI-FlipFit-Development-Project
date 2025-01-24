@@ -1,10 +1,10 @@
 package com.flipkart.bean;
-import java.time.LocalTime;
+
 public class Slot {
 	private int slotId;
 	private int centerId;
-	private LocalTime startTime;
-	private LocalTime endTime;
+	private int startTime;
+	private int endTime;
 	private int numberofseats;
 	private int availableSeats;
 	
@@ -41,25 +41,25 @@ public class Slot {
 	/**
 	 * @return the startTime
 	 */
-	public LocalTime getStartTime() {
+	public int getStartTime() {
 		return startTime;
 	}
 	/**
 	 * @param startTime the startTime to set
 	 */
-	public void setStartTime(LocalTime startTime) {
+	public void setStartTime(int startTime) {
 		this.startTime = startTime;
 	}
 	/**
 	 * @return the endTime
 	 */
-	public LocalTime getEndTime() {
+	public int getEndTime() {
 		return endTime;
 	}
 	/**
 	 * @param endTime the endTime to set
 	 */
-	public void setEndTime(LocalTime endTime) {
+	public void setEndTime(int endTime) {
 		this.endTime = endTime;
 	}
 	/**
