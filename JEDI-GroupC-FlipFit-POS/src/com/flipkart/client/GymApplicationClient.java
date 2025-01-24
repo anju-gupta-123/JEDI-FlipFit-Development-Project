@@ -150,9 +150,11 @@ public class GymApplicationClient {
 					System.out.println("SORRY THERE IS NO CUSTOMER WITH THIS EMAIL");
 					return;
 				}
-				else if(customer.getPassword()!=password)
+				else if(!customer.getPassword().equals(password))
 				{
 					System.out.println("Sorry wrong password");
+					System.out.println(password);
+					System.out.println(customer.getPassword());
 					return;
 				}
 				else {
@@ -168,3 +170,4 @@ public class GymApplicationClient {
 	
 
 }
+	
