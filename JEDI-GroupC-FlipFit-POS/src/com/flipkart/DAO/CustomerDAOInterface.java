@@ -1,5 +1,6 @@
 package com.flipkart.DAO;
 
+import java.sql.Date;
 import java.util.List;
 
 import com.flipkart.bean.Booking;
@@ -13,10 +14,10 @@ public interface CustomerDAOInterface {
 	
 	public List<Gym_Center> viewAllApprovedGymCenters();
 	
-	public List<Slot> viewAvailableSlots(int gym_centerID);
+	public List<Slot> viewAvailableSlots(int gym_centerID, Date currentdate);
 	
 	public List<Booking> viewAllBookedSlots(int customerID);
 	
-	public void deleteBookedSlot();
+	public boolean deleteBookedSlot(int bookedSlotID);
 	
 }

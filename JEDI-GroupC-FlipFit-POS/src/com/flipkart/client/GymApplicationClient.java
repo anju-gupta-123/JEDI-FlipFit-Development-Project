@@ -158,7 +158,10 @@ public class GymApplicationClient {
 					return;
 				}
 				else {
-				cc.customerPage(sc, customer);}
+					System.out.println("SISTERRR"+customer.getId());
+				cc.customerPage(sc, customer);
+				
+				}
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
