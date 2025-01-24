@@ -1,12 +1,13 @@
 package com.flipkart.business;
-
+import com.flipkart.DAO.BookingDAOInterface;
+import com.flipkart.DAO.BookingDAOImpl;
 import java.util.ArrayList;
 import java.util.List;
 import com.flipkart.bean.Booking;
-import java.util.Date;
+;
 public class BookingOperations {
     private static List<Booking> bookings = new ArrayList<>(); // Central list to store bookings
-    private static int bookingIdCounter = 1;
+    static BookingDAOInterface bookingimpl= new BookingDAOImpl();
 
     /**
      * Creates a booking and stores it in the system.
@@ -16,16 +17,9 @@ public class BookingOperations {
      * @param date    The booking date
      * @param status  The booking status
      */
-    public static void createBooking(int userId, int slotId, Date date, String status) {
-        Booking booking = new Booking();
-        booking.setBooking_id(bookingIdCounter++);
-        booking.setCustomer_id(userId);
-        booking.setSlot_id(slotId);
-        booking.setBooking_date(date);
-        booking.setStatus(status);
-
-        bookings.add(booking); // Add the booking to the list
-        System.out.println("Booking created successfully! Booking ID: " + booking.getBooking_id());
+    public static boolean createBooking(Booking booking) {
+         // Add the booking to the list
+    	return bookingimpl.createbooking(booking);
     }
 
     /**
