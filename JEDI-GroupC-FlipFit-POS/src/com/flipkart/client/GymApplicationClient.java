@@ -27,7 +27,7 @@ public class GymApplicationClient {
 
         Gym_Owner newOwner = userOps.registerGymOwner(name, email, contact, password, aadharCard, gstNo);
         if (newOwner != null) {
-            System.out.println("Gym Owner registered successfully with ID: " + newOwner.getId());
+            System.out.println("Gym Owner registered successfully !! Thank you");
             System.out.println("Your application is pending admin approval.");
         } else {
             System.out.println("Registration failed. Please try again.");
@@ -46,7 +46,7 @@ public class GymApplicationClient {
 
         User newCustomer = userOps.registerCustomer(name, email, contact, password);
         if (newCustomer != null) {
-            System.out.println("Customer registered successfully with ID: " + newCustomer.getId());
+            System.out.println("Customer registered successfully !! Thank you");
         } else {
             System.out.println("Registration failed. Please try again.");
         }
@@ -115,6 +115,7 @@ public class GymApplicationClient {
 		System.out.println(role=="Admin");
 		if(role.equalsIgnoreCase("Admin")) {
 			try {
+				
 				gac.adminPage();
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -123,17 +124,17 @@ public class GymApplicationClient {
 				
 		}
 		else if (role.equalsIgnoreCase("Gym Owner")) {
-            try {
-                // Authenticate and retrieve GymOwner details
+            	try {
+            	// Authenticate and retrieve GymOwner details
                 Gym_Owner gymOwner = userOps.authenticateGymOwner(email, password);
                 if (gymOwner == null) {
                 	System.out.println("SORRY THERE IS NO GYM OWNER WITH THIS EMAIL");
 					
                 } 
-                else if(gymOwner.getPassword()!= password)
+                else if(!gymOwner.getPassword().equals(password))
                 {
                 	System.out.println("Sorry wrong password");
-					return;
+					
                 }
                 else {
                 	
@@ -141,24 +142,23 @@ public class GymApplicationClient {
                 }
             } catch (Exception e) {
                 System.out.println(e.getMessage());
-            }
+            
+            		}
 		}
 		else if(role.equalsIgnoreCase("Customer")) {
 			try {
 				Customer customer = userOps.authenticateCustomer(email, password);
 				if(customer==null) {
 					System.out.println("SORRY THERE IS NO CUSTOMER WITH THIS EMAIL");
-					return;
+					
 				}
 				else if(!customer.getPassword().equals(password))
 				{
 					System.out.println("Sorry wrong password");
-					System.out.println(password);
-					System.out.println(customer.getPassword());
-					return;
+					
 				}
 				else {
-					System.out.println("SISTERRR"+customer.getId());
+				
 				cc.customerPage(sc, customer);
 				
 				}

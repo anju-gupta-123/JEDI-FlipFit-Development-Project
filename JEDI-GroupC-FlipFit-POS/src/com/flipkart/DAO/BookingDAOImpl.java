@@ -15,14 +15,11 @@ public class BookingDAOImpl implements BookingDAOInterface {
 			Connection con = DBUtils.connect();
 			PreparedStatement stmt=con.prepareStatement("insert into flipfitBookedSlot (customerId, slotId, date) values(?,?,?)");  
 			stmt.setInt(1, booking.getCustomer_id()); 
-			System.out.println("Hello"+booking.getCustomer_id());
+			
 			stmt.setInt(2, booking.getSlot_id());
 			java.sql.Date sqlDate = new java.sql.Date(booking.getBooking_date().getTime());
 			//System.out.println(sqlDate);
 			stmt.setDate(3, sqlDate);
-			
-			int i=stmt.executeUpdate();  
-			System.out.println(i+" records inserted");  
 			con.close(); 
 			return true;
 			 

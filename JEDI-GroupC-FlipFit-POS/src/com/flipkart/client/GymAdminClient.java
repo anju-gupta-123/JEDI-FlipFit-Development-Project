@@ -88,12 +88,28 @@ public class GymAdminClient {
                 case 5:
                     System.out.print("Enter Gym ID to approve: ");
                     int gymId = sc.nextInt();
-                    adminOps.approveGymRequest(gymId);
+                    boolean sucess1=adminOps.approveGymRequest(gymId);
+                    if(sucess1)
+                    {
+                    	System.out.println("Gym Owner Id"+gymId+"Has Been Approved");
+                    }
+                    else
+                    {
+                    	System.out.println("Failed to approve gym owner");
+                    }
                     break;
                 case 6:
                     System.out.print("Enter Gym Owner ID to approve: ");
                     int ownerId = sc.nextInt();
-                    adminOps.approveGymOwnerRequest(ownerId);
+                    boolean sucess2=adminOps.approveGymOwnerRequest(ownerId);
+                    if(sucess2)
+                    {
+                    	System.out.println("Gym Owner Id"+ownerId+"Has Been Approved");
+                    }
+                    else
+                    {
+                    	System.out.println("Failed to approve gym owner");
+                    }
                     break;
                 case 7:
                     loop = false;

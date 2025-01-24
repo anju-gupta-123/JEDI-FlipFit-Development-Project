@@ -31,13 +31,13 @@ public class AdminOperations {
         return adminImpl.viewPendingGymCenters();
     }
 
-    public void approveGymRequest(int gymId) {
-    	adminImpl.approveGymRegistration(gymId);
+    public boolean approveGymRequest(int gymId) {
+    	return adminImpl.approveGymRegistration(gymId);
         
     }
 
-    public void approveGymOwnerRequest(int ownerId) {
-    	adminImpl.approveGymOwnerRegistration(ownerId);
+    public boolean approveGymOwnerRequest(int ownerId) {
+    	return adminImpl.approveGymOwnerRegistration(ownerId);
     	
     }
 }

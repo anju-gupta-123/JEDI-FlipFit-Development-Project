@@ -4,6 +4,7 @@ package com.flipkart.business;
 import com.flipkart.bean.Gym_Owner;
 import com.flipkart.DAO.CustomerDAOImpl;
 import com.flipkart.DAO.CustomerDAOInterface;
+import com.flipkart.DAO.GymOwnerDAOImpl;
 import com.flipkart.DAO.GymOwnerDAOInterface;
 //import com.flipkart.DAO.GymOwnerDAOImpl;
 
@@ -16,12 +17,9 @@ import com.flipkart.DAO.UserDAOInterface;
 public class UserOperations {
 	UserDAOInterface userimpl = new UserDaoImpl();
 	CustomerDAOInterface customerimpl= new CustomerDAOImpl();
-	//GymOwnerDAOInterface gymownerimpl= new GymOwnerDAOImpl();
+	GymOwnerDAOInterface gymownerimpl= new GymOwnerDAOImpl();
 
-    private static Map<String, Gym_Owner> gymOwners = new HashMap<>();
-    
-    private static Map<String, Customer> customers = new HashMap<>();
-    //private static Map<Integer, Gym_Owner> gymOwners = new HashMap<>();
+
     
     
 
@@ -36,12 +34,8 @@ public class UserOperations {
         newOwner.setAadharCard(aadharCard);
         newOwner.setGSTNo(gstNo);
         newOwner.setApproved(false); // Mark as pending approval
-
-        // Add the owner to the pending list for admin approval
-        //Admin.setGymOwners(newOwner);
         
         userimpl.registerGymOwner(newOwner);
-        gymOwners.put(newOwner.getEmail(), newOwner); // Store in the main list for reference
         return newOwner;
     }
 
@@ -59,7 +53,7 @@ public Customer registerCustomer(String name, String email, String contact, Stri
     
     public Gym_Owner authenticateGymOwner(String email, String password) {
         //Gym_Owner owner = gymownerimpl.getGymOwnerDetails(email);
-    	Gym_Owner owner=new Gym_Owner();
+    	Gym_Owner owner= gymownerimpl.getGymOwnerDetails(email);
         if (owner != null ) {
         	
             return owner;

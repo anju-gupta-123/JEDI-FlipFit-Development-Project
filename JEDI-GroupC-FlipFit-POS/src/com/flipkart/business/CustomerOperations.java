@@ -15,7 +15,7 @@ public class CustomerOperations {
 	AdminDAOInterface adminImpl = new AdminDAOImpl();
 	CustomerDAOInterface customerImpl= new CustomerDAOImpl();
 	BookingOperations bk= new BookingOperations();
-    private List<Integer> bookedSlots = new ArrayList<>(); // Stores booked slot IDs for simplicity
+    
     
 
     /**

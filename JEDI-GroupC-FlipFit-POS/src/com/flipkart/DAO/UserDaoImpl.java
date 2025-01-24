@@ -20,7 +20,7 @@ public class UserDaoImpl implements UserDAOInterface {
 			stmt.setString(4, c.getPassword());
 			  
 			int i=stmt.executeUpdate();  
-			System.out.println(i+" records inserted");  
+			//System.out.println(i+" records inserted");  
 			con.close(); 
 			return true;
 			 
@@ -45,7 +45,7 @@ public class UserDaoImpl implements UserDAOInterface {
 			stmt.setString(5, gymowner.getAadharCard());
 			stmt.setString(6, gymowner.getGSTNo());
 			int i=stmt.executeUpdate();  
-			System.out.println(i+" records inserted");  
+			//System.out.println(i+" records inserted");  
 			con.close(); 
 			return true;
 			 
