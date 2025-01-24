@@ -16,4 +16,9 @@ public interface AdminDAOInterface {
 		
 		public boolean approveGymOwnerRegistration(int GymOwnerID);
 		
+		public List<Gym_Owner> viewApprovedGymOwners();
+		
+		public List<Gym_Center> viewApprovedGymCenters();
+		
 }
+ 
