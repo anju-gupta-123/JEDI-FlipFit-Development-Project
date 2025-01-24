@@ -1,0 +1,275 @@
+package com.flipkart.DAO;
+
+
+
+import com.flipkart.utils.DBUtils;
+
+import com.flipkart.bean.*;
+
+import java.sql.*;
+
+import java.util.*;
+
+
+
+public class GymOwnerDAOImpl implements GymOwnerDAOInterface{
+
+	Connection connection = null;
+
+	PreparedStatement statement = null;
+
+
+
+	@Override
+
+	public boolean addSlot(Slot newSlot) {
+
+		String query = "INSERT INTO flipfitSlot (slotId, centerId, startTime, endTime, capacity) " +
+
+	            "VALUES (?, ?, ?, ?, ?)";
+
+	    try (Connection connection = DBUtils.connect();
+
+    		PreparedStatement statement = connection.prepareStatement(query)) {	        	
+
+        	statement.setInt(1, newSlot.getSlotId()); 
+
+        	statement.setInt(2, newSlot.getCenterId());	
+
+        	statement.setTime(3, java.sql.Time.valueOf(newSlot.getStartTime()));
+
+        	statement.setTime(4, java.sql.Time.valueOf(newSlot.getEndTime()));
+
+        	statement.setInt(5, newSlot.getNumberofseats());
+
+
+
+        	statement.executeUpdate();
+
+        	statement.close();
+
+        	connection.close();
+
+	        	
+
+        	return true;
+
+	    } catch (SQLException sqlExcep) {
+
+	        System.out.println("SQL Exception: " + sqlExcep.getMessage());
+
+	    } catch (Exception e) {
+
+	        e.printStackTrace();
+
+	    }
+
+	    return false;
+
+	}
+
+	
+
+	@Override
+
+	public Gym_Owner getGymOwnerDetails(String ownerEmail) {
+
+		String query = "SELECT * FROM flipfitGymOwner WHERE email = ?";
+
+	    Gym_Owner gymOwner = new Gym_Owner();
+
+
+
+	    try (Connection connection = DBUtils.connect();
+
+	         PreparedStatement statement = connection.prepareStatement(query)) {
+
+	        statement.setString(1, ownerEmail);
+
+
+
+	        try (ResultSet resultSet = statement.executeQuery()) {
+
+	            while (resultSet.next()) {
+
+	            	gymOwner.setId(resultSet.getInt("ownerId"));
+
+	            	gymOwner.setEmail(resultSet.getString("email"));
+
+	            	gymOwner.setPassword(resultSet.getString("gymOwnerPassword"));
+
+	            	gymOwner.setAadharCard(resultSet.getString("aadharCard"));
+
+	            	gymOwner.setApproved(resultSet.getBoolean("isApproved"));
+
+	            	gymOwner.setContact(resultSet.getString("contact"));
+
+	            	gymOwner.setGSTNo(resultSet.getString("gstNo"));
+
+	            	gymOwner.setName(resultSet.getString("gymOwnerName"));
+
+	            	
+
+	            	return gymOwner;
+
+	            }
+
+	        }
+
+	    } catch (SQLException e) {
+
+	        System.out.println("SQL Exception in getCenterDetails: " + e.getMessage());
+
+	    } catch (Exception e) {
+
+	        e.printStackTrace();
+
+	    }
+
+	    return gymOwner;
+
+	}
+
+	
+
+	@Override
+
+	public List<Gym_Center> getCenterDetails(int ownerId) {
+
+		String query = "SELECT * FROM flipfitCenter WHERE ownerId = ?";
+
+	    List<Gym_Center> gymCenters = new ArrayList<>();
+
+
+
+	    try (Connection connection = DBUtils.connect();
+
+	         PreparedStatement statement = connection.prepareStatement(query)) {
+
+	        statement.setInt(1, ownerId);
+
+
+
+	        try (ResultSet resultSet = statement.executeQuery()) {
+
+	            while (resultSet.next()) {
+
+	                Gym_Center gymCenter = new Gym_Center();
+
+	                gymCenter.setCenter_id(resultSet.getInt("centerId"));
+
+	                gymCenter.setOwner_id(resultSet.getInt("ownerId"));
+
+	                gymCenter.setCenter_name(resultSet.getString("centerName"));
+
+	                gymCenter.setAddress(resultSet.getString("address"));
+
+	                gymCenter.setApproved(resultSet.getBoolean("isApproved"));
+
+
+
+	                gymCenters.add(gymCenter);
+
+	            }
+
+	        }
+
+	    } catch (SQLException e) {
+
+	        System.out.println("SQL Exception in getCenterDetails: " + e.getMessage());
+
+	    } catch (Exception e) {
+
+	        e.printStackTrace();
+
+	    }
+
+	    return gymCenters;
+
+	}
+
+
+
+	@Override
+
+	public boolean isApprovedOwner(int gymOwnerId) {
+
+	    String query = "SELECT isApproved FROM flipfitGymOwner WHERE ownerId = ?";
+
+	    
+
+	    try (Connection connection = DBUtils.connect();
+
+	        PreparedStatement statement = connection.prepareStatement(query)) {
+
+	        
+
+	        statement.setInt(1, gymOwnerId);
+
+	        try (ResultSet resultSet = statement.executeQuery()) {
+
+	            if (resultSet.next()) {
+
+	                return resultSet.getBoolean("isApproved");
+
+	            }
+
+	        }
+
+	    } catch (SQLException e) {
+
+	        System.out.println("SQL Exception in isApproved(email): " + e.getMessage());
+
+	    } catch (Exception e) {
+
+	    	e.printStackTrace();
+
+	    }
+
+	    return false;
+
+	}
+
+
+
+	@Override
+
+    public boolean isApprovedCenter(int gymCenterId) {
+
+        String query = "SELECT isApproved FROM flipfitCenter WHERE centerId = ?";
+
+        
+
+        try (Connection connection = DBUtils.connect();
+
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            
+
+            statement.setInt(1, gymCenterId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+
+                if (resultSet.next()) {
+
+                    return resultSet.getBoolean("isApproved");
+
+                }
+
+            }
+
+        } catch (SQLException e) {
+
+            System.out.println("SQL Exception in isApproved(centerId): " + e.getMessage());
+
+        } catch (Exception e) {
+
+        	e.printStackTrace();
+
+        }
+
+        return false;
+
+    }
+
+}
