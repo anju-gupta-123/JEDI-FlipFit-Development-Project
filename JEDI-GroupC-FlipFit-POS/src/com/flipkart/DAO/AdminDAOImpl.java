@@ -11,6 +11,7 @@ import java.util.List;
 import com.flipkart.bean.Gym_Center;
 import com.flipkart.bean.Gym_Owner;
 import com.flipkart.constants.SQLQueries;
+import com.flipkart.utils.DBUtils;
 
 
 public class AdminDAOImpl implements AdminDAOInterface
@@ -18,7 +19,7 @@ public class AdminDAOImpl implements AdminDAOInterface
 	public List<Gym_Center> viewPendingGymCenters(){
         List<Gym_Center> pendingReq = new ArrayList<>();
         try {
-        	Connection a = DBUtils.getConnection();
+        	Connection a = DBUtils.connect();
     				
             System.out.println("Getting Pending Requests...");
             PreparedStatement s = a.prepareStatement(SQLQueries.VIEW_GYM_CENTER_REQUESTS);
@@ -44,7 +45,7 @@ public class AdminDAOImpl implements AdminDAOInterface
 	public List<Gym_Owner> viewPendinGymOwnerRequests(){
         List<Gym_Owner> pendingReq = new ArrayList<>();
         try {
-            Connection con = DBUtils.getConnection();
+            Connection con = DBUtils.connect();
             System.out.println("Getting Pending Requests...");
             PreparedStatement smt2= con.prepareStatement(SQLQueries.VIEW_GYM_OWNER_REQUESTS);
             ResultSet rs = smt2.executeQuery();
@@ -68,7 +69,7 @@ public class AdminDAOImpl implements AdminDAOInterface
 	{
 		try
 		{
-		Connection connection = DBUtils.getConnection();
+		Connection connection = DBUtils.connect();
 		PreparedStatement statement = connection.prepareStatement(SQLQueries.APPROVE_GYM_CENTER);
 		statement.setInt(1, GymCenterID);
 	
@@ -81,7 +82,7 @@ public class AdminDAOImpl implements AdminDAOInterface
 	public boolean approveGymOwnerRegistration(int GymOwnerID)
 	{
 		try {
-		Connection wht = DBUtils.getConnection();
+		Connection wht = DBUtils.connect();
 		PreparedStatement stm = wht.prepareStatement(SQLQueries.APPROVE_GYM_OWNER);
 		stm.setInt(1, GymOwnerID);
 		stm.executeUpdate();
@@ -93,7 +94,7 @@ public class AdminDAOImpl implements AdminDAOInterface
 	{
 		List<Gym_Owner> pendingReq = new ArrayList<>();
         try {
-            Connection con = DBUtils.getConnection();
+            Connection con = DBUtils.connect();
             System.out.println("Getting Pending Requests...");
             PreparedStatement smt2= con.prepareStatement(SQLQueries.VIEW_APPROVED_GYM_OWNERS);
             ResultSet rs = smt2.executeQuery();
@@ -118,7 +119,7 @@ public class AdminDAOImpl implements AdminDAOInterface
 	{
 		List<Gym_Center> pendingReq = new ArrayList<>();
         try {
-        	Connection a = DBUtils.getConnection();
+        	Connection a = DBUtils.connect();
             System.out.println("Getting Pending Requests...");
             PreparedStatement s = a.prepareStatement(SQLQueries.VIEW_APPROVED_GYM_CENTERS);
             
