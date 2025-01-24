@@ -15,4 +15,6 @@ public interface GymOwnerDAOInterface {
     
     public boolean isApprovedCenter(int gymCenterId);
     
+    public boolean registerGymCenter(Gym_Center gCenter);
+    
 }
