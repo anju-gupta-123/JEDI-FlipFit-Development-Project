@@ -65,7 +65,7 @@ public class GymOwnerOperations {
         gymCenter.setApproved(false);
 
 
-
+        gymsDao.registerGymCenter(gymCenter);
         Admin.setGymCenters(gymCenter);
 
 

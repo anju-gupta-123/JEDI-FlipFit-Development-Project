@@ -41,11 +41,9 @@ public class GymOwnerDAOImpl implements GymOwnerDAOInterface{
         	statement.setTime(4, java.sql.Time.valueOf(newSlot.getEndTime()));
 
         	statement.setInt(5, newSlot.getNumberofseats());
-
-
-
+        	
         	statement.executeUpdate();
-
+        	
         	statement.close();
 
         	connection.close();
@@ -66,6 +64,31 @@ public class GymOwnerDAOImpl implements GymOwnerDAOInterface{
 
 	    return false;
 
+	}
+	
+	public boolean registerGymCenter(Gym_Center gCenter) {
+		
+		String query = "insert into flipfitCenter (ownerId, centerName, address, numOfSlots) values(? ? ? ?)";
+		
+		try {
+			Connection connection = DBUtils.connect();
+			PreparedStatement stmt = connection.prepareStatement(query);
+			stmt.setInt(1, gCenter.getOwner_id());
+			stmt.setString(2, gCenter.getCenter_name());
+			stmt.setString(3, gCenter.getAddress());
+			stmt.setInt(4, gCenter.getNo_of_slots());
+			
+			int rows = stmt.executeUpdate();
+			
+			return true;
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return false;
+		}
+		
+		
 	}
 
 	
