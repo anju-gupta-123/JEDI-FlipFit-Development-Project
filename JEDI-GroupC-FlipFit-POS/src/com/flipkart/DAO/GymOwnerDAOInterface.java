@@ -1,15 +1,18 @@
 package com.flipkart.DAO;
 
-import com.flipkart.bean.Slot;
+import com.flipkart.bean.*;
+import java.util.*;
 
 public interface GymOwnerDAOInterface {
-	
-	public boolean registerGymOwner();
-	
-	public void addSlot(int gymOwnerID, int GymCentre, Slot newSlot);
-	
-	public boolean isApproved(String gymOwnerEmail);
-	
-	public boolean isApproved(int gymCenterId);
-	
+    
+    public boolean addSlot(Slot newSlot);
+    
+    public Gym_Owner getGymOwnerDetails(String ownerEmail);
+    
+    public List<Gym_Center> getCenterDetails(int ownerId);
+    
+    public boolean isApprovedOwner(int gymOwnerId);
+    
+    public boolean isApprovedCenter(int gymCenterId);
+    
 }
