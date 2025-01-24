@@ -5,17 +5,18 @@ import java.util.List;
 import com.flipkart.bean.Booking;
 import com.flipkart.bean.Customer;
 import com.flipkart.bean.Gym_Center;
+import com.flipkart.bean.Slot;
 
 public interface CustomerDAOInterface {
 	
-	public boolean registerCustomer(Customer c);
+	public Customer getCustomerDetails(String email);
 	
-	public boolean validateCustomer(String email, String password);
+	public List<Gym_Center> viewAllApprovedGymCenters();
 	
-	public List<Gym_Center> viewAllGymCenters();
+	public List<Slot> viewAvailableSlots(int gym_centerID);
 	
-	public List<Booking> viewAllBookedSlots();
+	public List<Booking> viewAllBookedSlots(int customerID);
 	
-	public void deleteBooking();
+	public void deleteBookedSlot();
 	
 }

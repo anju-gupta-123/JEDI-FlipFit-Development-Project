@@ -2,7 +2,7 @@ package com.flipkart.bean;
 import java.util.Date;
 public class Booking {
 	private int booking_id;
-	private int user_id;
+	private int customer_id;
 	private int slot_id;
 	private Date booking_date;
 	private String status;
@@ -21,14 +21,14 @@ public class Booking {
 	/**
 	 * @return the user_id
 	 */
-	public int getUser_id() {
-		return user_id;
+	public int getCustomer_id() {
+		return customer_id;
 	}
 	/**
 	 * @param user_id the user_id to set
 	 */
-	public void setUser_id(int user_id) {
-		this.user_id = user_id;
+	public void setCustomer_id(int customer_id) {
+		this.customer_id = customer_id;
 	}
 	/**
 	 * @return the slot_id

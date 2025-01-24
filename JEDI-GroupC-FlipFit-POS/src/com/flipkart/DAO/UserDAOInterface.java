@@ -9,9 +9,5 @@ public interface UserDAOInterface {
 	
 	public boolean registerGymOwner(Gym_Owner gymowner);
 	
-	public boolean authenticateCustomer(String email, String password);
-	
-	public boolean authenticateGymOwner(String email, String passowrd);
-	
 	public boolean authenticateAdmin();
 }
