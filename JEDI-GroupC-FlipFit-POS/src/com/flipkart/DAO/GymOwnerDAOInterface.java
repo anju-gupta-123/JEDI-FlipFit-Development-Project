@@ -5,7 +5,6 @@ import java.util.*;
 
 public interface GymOwnerDAOInterface {
     
-    public boolean addSlot(Slot newSlot);
     
     public Gym_Owner getGymOwnerDetails(String ownerEmail);
     

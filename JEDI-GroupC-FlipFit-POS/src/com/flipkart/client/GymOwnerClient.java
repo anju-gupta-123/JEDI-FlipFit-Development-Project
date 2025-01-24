@@ -50,9 +50,7 @@ public class GymOwnerClient {
 
         if (gymCenter != null) {
 
-            System.out.println("Gym '" + gymName + "' has been registered with Center ID: " 
-
-                + gymCenter.getCenter_id() + " and is awaiting admin approval.");
+            System.out.println("Gym '" + gymName + "' has been registered " + " and is awaiting admin approval.");
 
         } else {
 
@@ -146,17 +144,9 @@ public class GymOwnerClient {
 
         int endTimeIn24Hr = startTimeIn24Hr + 1;
 
-
-
-        // Convert times to LocalTime
-
-        LocalTime startTime = LocalTime.of(startTimeIn24Hr, 0);
-
-        LocalTime endTime = LocalTime.of(endTimeIn24Hr, 0);
-
         
 
-        System.out.print("Capacity: ");
+        System.out.print("Please Enter The Maximum Capacity: ");
 
         int capacity = sc.nextInt();
 
@@ -172,7 +162,7 @@ public class GymOwnerClient {
 
 
 
-        boolean success = gymOwnerOps.addSlot(centerId, startTime, endTime, capacity);
+        boolean success = gymOwnerOps.addSlot(centerId, startTimeIn24Hr, endTimeIn24Hr, capacity);
 
         if (success) {
 

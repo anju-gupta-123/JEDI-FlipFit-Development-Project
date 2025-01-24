@@ -8,8 +8,6 @@ import com.flipkart.DAO.GymOwnerDAOImpl;
 
 import java.util.*;
 
-import java.time.LocalTime;
-
 
 
 public class GymOwnerOperations {
@@ -19,13 +17,6 @@ public class GymOwnerOperations {
     public Map<Integer, List<Customer>> registeredCustomers = new HashMap<>();
 
     public List<Gym_Center> approvedgymCenters = new ArrayList<>();
-
-    public static Map<Integer,List<Gym_Center>> ownedGyms= new HashMap<>();
-
-    
-
-    private static int centerIdCounter = 1;
-
     
 
     SlotOperations slotop = new SlotOperations();
@@ -46,13 +37,8 @@ public class GymOwnerOperations {
 
     public Gym_Center registerGym(int ownerId, String gymName, String address, int numberOfSlots) {
 
-        int centerId = centerIdCounter++;
-
-        
-
         Gym_Center gymCenter = new Gym_Center();
 
-        gymCenter.setCenter_id(centerId);
 
         gymCenter.setOwner_id(ownerId);
 
@@ -66,25 +52,6 @@ public class GymOwnerOperations {
 
 
         gymsDao.registerGymCenter(gymCenter);
-        Admin.setGymCenters(gymCenter);
-
-
-
-        System.out.println("Generated Center ID: " + centerId);
-
-        List<Gym_Center> al= ownedGyms.get(ownerId);
-
-        if (al==null){
-
-        	al=new ArrayList<Gym_Center>();
-
-        }
-
-        al.add(gymCenter);
-
-        
-
-        ownedGyms.put(ownerId,al);
 
         return gymCenter;
 
@@ -102,7 +69,7 @@ public class GymOwnerOperations {
 
     
 
-    public boolean addSlot(int centerId, LocalTime startTime, LocalTime endTime, int capacity) {
+    public boolean addSlot(int centerId, int startTime, int endTime, int capacity) {
 
     	if(slotop.addSlots(centerId, startTime, endTime, capacity)) {
 

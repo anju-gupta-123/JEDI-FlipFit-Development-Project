@@ -20,55 +20,11 @@ public class GymOwnerDAOImpl implements GymOwnerDAOInterface{
 
 
 
-	@Override
-
-	public boolean addSlot(Slot newSlot) {
-
-		String query = "INSERT INTO flipfitSlot (slotId, centerId, startTime, endTime, capacity) " +
-
-	            "VALUES (?, ?, ?, ?, ?)";
-
-	    try (Connection connection = DBUtils.connect();
-
-    		PreparedStatement statement = connection.prepareStatement(query)) {	        	
-
-        	statement.setInt(1, newSlot.getSlotId()); 
-
-        	statement.setInt(2, newSlot.getCenterId());	
-
-        	statement.setTime(3, java.sql.Time.valueOf(newSlot.getStartTime()));
-
-        	statement.setTime(4, java.sql.Time.valueOf(newSlot.getEndTime()));
-
-        	statement.setInt(5, newSlot.getNumberofseats());
-        	
-        	statement.executeUpdate();
-        	
-        	statement.close();
-
-        	connection.close();
-
-	        	
-
-        	return true;
-
-	    } catch (SQLException sqlExcep) {
-
-	        System.out.println("SQL Exception: " + sqlExcep.getMessage());
-
-	    } catch (Exception e) {
-
-	        e.printStackTrace();
-
-	    }
-
-	    return false;
-
-	}
+	
 	
 	public boolean registerGymCenter(Gym_Center gCenter) {
 		
-		String query = "insert into flipfitCenter (ownerId, centerName, address, numOfSlots) values(? ? ? ?)";
+		String query = "insert into flipfitCenter (ownerId, centerName, address, numOfSlots) values(?,?,?,?)";
 		
 		try {
 			Connection connection = DBUtils.connect();
@@ -78,7 +34,7 @@ public class GymOwnerDAOImpl implements GymOwnerDAOInterface{
 			stmt.setString(3, gCenter.getAddress());
 			stmt.setInt(4, gCenter.getNo_of_slots());
 			
-			int rows = stmt.executeUpdate();
+			stmt.executeUpdate();
 			
 			return true;
 			
@@ -108,18 +64,22 @@ public class GymOwnerDAOImpl implements GymOwnerDAOInterface{
 	         PreparedStatement statement = connection.prepareStatement(query)) {
 
 	        statement.setString(1, ownerEmail);
+	        
 
 
 
 	        try (ResultSet resultSet = statement.executeQuery()) {
+	     
 
 	            while (resultSet.next()) {
+	            	
 
 	            	gymOwner.setId(resultSet.getInt("ownerId"));
 
 	            	gymOwner.setEmail(resultSet.getString("email"));
 
 	            	gymOwner.setPassword(resultSet.getString("gymOwnerPassword"));
+	            	
 
 	            	gymOwner.setAadharCard(resultSet.getString("aadharCard"));
 
@@ -294,5 +254,9 @@ public class GymOwnerDAOImpl implements GymOwnerDAOInterface{
         return false;
 
     }
+
+
+
+	
 
 }
