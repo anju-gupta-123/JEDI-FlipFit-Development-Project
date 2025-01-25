@@ -2,6 +2,7 @@ package com.flipkart.client;
 
 
 import com.flipkart.business.CustomerOperations;
+import com.flipkart.business.WaitlistOperations;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,6 +17,7 @@ import com.flipkart.bean.Slot;
 public class CustomerClient
 {
 	CustomerOperations customerOps= new CustomerOperations();
+	WaitlistOperations waitlistops= new WaitlistOperations();
 public void customerPage(Scanner scanner, Customer customer) {
 	
     System.out.println("\nWelcome, " + customer.getName() + "!");
@@ -153,9 +155,10 @@ public void customerPage(Scanner scanner, Customer customer) {
             scanner.nextLine();
             if(option.equalsIgnoreCase("yes"))
             {
-            	
+            	boolean success3=waitlistops.addToWaitlist(userid,slotId,utilDate);
+            	System.out.println("Thank you you have been added to the waitlist");
             }
-            else if(option.equalsIgnoreCase("No"))
+            else if(!option.equalsIgnoreCase("No"))
             {
             	System.out.println("Sorry no option as such");
             }

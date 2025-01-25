@@ -1,8 +1,23 @@
 package com.flipkart.bean;
 
+import java.util.Date;
+
 public class Waitlist {
 		private int user_Id;
 		private int slot_Id;
+		private Date bookingDate;
+		/**
+		 * @return the bookingDate
+		 */
+		public Date getBookingDate() {
+			return bookingDate;
+		}
+		/**
+		 * @param bookingDate the bookingDate to set
+		 */
+		public void setBookingDate(Date bookingDate) {
+			this.bookingDate = bookingDate;
+		}
 		/**
 		 * @return the user_Id
 		 */
