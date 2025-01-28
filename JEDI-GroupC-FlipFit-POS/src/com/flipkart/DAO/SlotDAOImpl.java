@@ -2,6 +2,9 @@ package com.flipkart.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.flipkart.bean.Slot;
 import com.flipkart.utils.DBUtils;
@@ -32,6 +35,33 @@ public class SlotDAOImpl implements SlotDAOInterface{
 				return false;
 		}		
 		
+	}
+	
+	public int checkCapacity(int slotid)
+	{
+		try {  
+			
+			Connection con = DBUtils.connect();
+			PreparedStatement stmt=con.prepareStatement("select * from flipfitSlot where slotId=?");
+			stmt.setInt(1, slotid);
+			
+			  
+			ResultSet rs = stmt.executeQuery();  
+			int res = 0;
+			while(rs.next()) {
+				res= rs.getInt("capacity");
+				
+			}
+			
+			con.close(); 
+			return res;
+			
+			 
+			  
+		}catch(Exception e){ 
+				e.printStackTrace();			
+				return 0;
+		}
 	}
 	
 	

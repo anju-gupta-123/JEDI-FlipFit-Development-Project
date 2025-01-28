@@ -2,6 +2,7 @@ package com.flipkart.client;
 
 
 import com.flipkart.business.CustomerOperations;
+import com.flipkart.business.NotificationsOperations;
 import com.flipkart.business.WaitlistOperations;
 
 import java.text.ParseException;
@@ -18,6 +19,7 @@ public class CustomerClient
 {
 	CustomerOperations customerOps= new CustomerOperations();
 	WaitlistOperations waitlistops= new WaitlistOperations();
+	NotificationsOperations notifops= new NotificationsOperations();
 public void customerPage(Scanner scanner, Customer customer) {
 	
     System.out.println("\nWelcome, " + customer.getName() + "!");
@@ -29,7 +31,8 @@ public void customerPage(Scanner scanner, Customer customer) {
         System.out.println("3. Book a Slot");
         System.out.println("4. View All Booked Slots");
         System.out.println("5. Cancel a Booked Slot");
-        System.out.println("6. Logout");
+        System.out.println("6. View Notifications");
+        System.out.println("7. Logout");
 
         System.out.print("Enter your choice: ");
         int choice = scanner.nextInt();
@@ -52,6 +55,9 @@ public void customerPage(Scanner scanner, Customer customer) {
                 cancelBookedSlot(scanner,customer.getId());
                 break;
             case 6:
+            	viewNotifications(customer.getId());
+            	break;
+            case 7:
                 System.out.println("Logging out...");
                 return;
             default:
@@ -237,6 +243,23 @@ public void customerPage(Scanner scanner, Customer customer) {
             System.out.println("Failed to cancel the slot. Please try again.");
         }
     
+    }
+    
+    public void viewNotifications(int customerid)
+    {
+    	List<String> notifications=notifops.viewNotifications(customerid);
+    	System.out.print("\n Your notifications are as follows:");
+    	if(notifications==null)
+    	{
+    		System.out.print("\n No notifications to view");
+    	}
+    	else
+    	{
+    		for(String noti:notifications)
+    		{
+    			System.out.print("\n"+noti + "\n");
+    		}
+    	}
     }
 
 

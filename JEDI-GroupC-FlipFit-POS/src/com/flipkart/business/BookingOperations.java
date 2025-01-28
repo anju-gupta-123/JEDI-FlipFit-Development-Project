@@ -1,5 +1,7 @@
 package com.flipkart.business;
 import com.flipkart.DAO.BookingDAOInterface;
+import com.flipkart.DAO.SlotDAOInterface;
+import com.flipkart.DAO.SlotDAOImpl;
 import com.flipkart.DAO.BookingDAOImpl;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +10,9 @@ import com.flipkart.bean.Booking;
 public class BookingOperations {
     private static List<Booking> bookings = new ArrayList<>(); // Central list to store bookings
     static BookingDAOInterface bookingimpl= new BookingDAOImpl();
+    static SlotDAOInterface slotimpl= new SlotDAOImpl();
+    
+    
 
     /**
      * Creates a booking and stores it in the system.
@@ -19,7 +24,19 @@ public class BookingOperations {
      */
     public static boolean createBooking(Booking booking) {
          // Add the booking to the list
-    	return bookingimpl.createbooking(booking);
+    	if(checkCapacity(booking))
+    	{
+    		booking.setStatus(1);
+    		return bookingimpl.createbooking(booking);
+    	}
+    	else
+    	{
+    		booking.setStatus(0);
+    		bookingimpl.createbooking(booking);
+    		return false;
+    		
+    	}
+		
     }
 
     /**
@@ -47,5 +64,15 @@ public class BookingOperations {
         }
         System.out.println("Invalid booking ID.");
         return false;
+    }
+    public static boolean checkCapacity(Booking booking)
+    {
+		int cap= slotimpl.checkCapacity(booking.getSlot_id());
+		int slots= bookingimpl.checkSlots(booking.getBooking_date(), booking.getSlot_id());
+		//System.out.println("CAP"+cap+"       Slot"+slots);
+		return !(slots==cap);
+		
+		
+    	
     }
 }
