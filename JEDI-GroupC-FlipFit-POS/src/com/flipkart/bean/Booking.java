@@ -5,7 +5,7 @@ public class Booking {
 	private int customer_id;
 	private int slot_id;
 	private Date booking_date;
-	private String status;
+	private int status;
 	/**
 	 * @return the booking_id
 	 */
@@ -57,13 +57,13 @@ public class Booking {
 	/**
 	 * @return the status
 	 */
-	public String getStatus() {
+	public int getStatus() {
 		return status;
 	}
 	/**
 	 * @param status the status to set
 	 */
-	public void setStatus(String status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
 }

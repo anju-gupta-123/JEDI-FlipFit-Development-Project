@@ -4,6 +4,6 @@ import com.flipkart.bean.Slot;
 
 public interface SlotDAOInterface {
 	public boolean addSlot(Slot slot);
-	
+	public int checkCapacity(int slotid);
 
 }

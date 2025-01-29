@@ -20,4 +20,6 @@ public interface CustomerDAOInterface {
 	
 	public boolean deleteBookedSlot(int bookedSlotID);
 	
+	public Booking getBooking(int bookingid); 
+	
 }

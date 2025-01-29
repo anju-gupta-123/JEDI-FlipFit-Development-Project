@@ -26,7 +26,8 @@ public class CustomerDAOImpl implements CustomerDAOInterface{
 			stmt.setString(1, email);
 			
 			  
-			ResultSet rs = stmt.executeQuery();  
+			ResultSet rs = stmt.executeQuery();
+			boolean check=false;
 			while(rs.next()) {
 				customer.setName(rs.getString("customerName"));
 				customer.setEmail(rs.getString("email"));
@@ -34,11 +35,13 @@ public class CustomerDAOImpl implements CustomerDAOInterface{
 				customer.setContact(rs.getString("contact"));
 				customer.setId(rs.getInt("customerId"));
 				
-				
+				check=true;
 				break;
 			}
 			con.close(); 
+			if(check)
 			return customer;
+			else return null;
 			 
 			  
 		}catch(Exception e){ 
@@ -91,15 +94,15 @@ public class CustomerDAOImpl implements CustomerDAOInterface{
 			ResultSet rs = stmt.executeQuery();  
 			while(rs.next()) {
 				int availableSeats = rs.getInt("capacity") - getBookingsForASlot(rs.getInt("slotId"));
-				if(availableSeats > 0) {
-					Slot stSlot = new Slot();
-					stSlot.setSlotId(rs.getInt("slotId"));
-					stSlot.setCenterId(gym_centerID);
-					stSlot.setAvailableSeats(availableSeats);
-					stSlot.setStartTime(rs.getInt("startTime"));
-					stSlot.setNumberofseats(rs.getInt("capacity"));
-					viewAvailableSlots.add(stSlot);
-				}
+				
+				Slot stSlot = new Slot();
+				stSlot.setSlotId(rs.getInt("slotId"));
+				stSlot.setCenterId(gym_centerID);
+				stSlot.setAvailableSeats(availableSeats);
+				stSlot.setStartTime(rs.getInt("startTime"));
+				stSlot.setNumberofseats(rs.getInt("capacity"));
+				viewAvailableSlots.add(stSlot);
+				
 
 			}
 			con.close(); 
@@ -131,7 +134,7 @@ public class CustomerDAOImpl implements CustomerDAOInterface{
 				booking.setBooking_date(rs.getDate("date"));
 				booking.setSlot_id(rs.getInt("slotId"));
 				booking.setCustomer_id(rs.getInt("customerId"));
-				booking.setStatus("bookedSlotStatus");
+				booking.setStatus(rs.getInt("bookedSlotStatus"));
 				
 				bookedSlots.add(booking);
 			}
@@ -190,6 +193,38 @@ public class CustomerDAOImpl implements CustomerDAOInterface{
 				e.printStackTrace();			
 				return 0;
 		}
+	}
+		public Booking getBooking(int bookingid) {
+			
+			
+			try {  
+				
+				Connection con = DBUtils.connect();
+				Booking book=new Booking();
+				PreparedStatement stmt=con.prepareStatement("select *  from flipfitBookedSlot where bookedSlotId=?");
+				stmt.setInt(1, bookingid);
+				ResultSet rs = stmt.executeQuery(); 
+				
+				while(rs.next()) {
+					java.sql.Date sqlDate = rs.getDate("date");
+
+			        // Convert to java.util.Date
+			        java.util.Date utilDate = new Date(sqlDate.getTime());
+					book.setBooking_date(utilDate);
+					book.setSlot_id(rs.getInt("slotId"));
+					return book;
+					
+					
+				}
+				con.close(); 
+				
+				 
+				  
+			}catch(Exception e){ 
+					e.printStackTrace();			
+					return null;
+			}
+			return null;
 	}
 
 	
