@@ -65,6 +65,8 @@ public class BookingOperations {
         System.out.println("Invalid booking ID.");
         return false;
     }
+    
+    // Function to check and tell if a particular slot has enough slots while booking
     public static boolean checkCapacity(Booking booking)
     {
 		int cap= slotimpl.checkCapacity(booking.getSlot_id());
