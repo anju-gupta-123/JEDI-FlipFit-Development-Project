@@ -2,6 +2,7 @@
 package com.flipkart.business;
 
 import com.flipkart.bean.Gym_Owner;
+import com.flipkart.exceptions.UserNotFoundException;
 import com.flipkart.DAO.CustomerDAOImpl;
 import com.flipkart.DAO.CustomerDAOInterface;
 import com.flipkart.DAO.GymOwnerDAOImpl;
@@ -60,13 +61,14 @@ public Customer registerCustomer(String name, String email, String contact, Stri
         }
         return null;
     }
-    public Customer authenticateCustomer(String email, String password) {
+    public Customer authenticateCustomer(String email, String password) throws UserNotFoundException{
         Customer customer = customerimpl.getCustomerDetails(email);
         
         if (customer != null ) {
         	
             return customer;
         }
-        return null;
+        throw new UserNotFoundException();
+        
     }
 }
